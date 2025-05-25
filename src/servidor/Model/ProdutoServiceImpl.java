@@ -20,11 +20,11 @@ public class ProdutoServiceImpl extends UnicastRemoteObject implements ProdutoSe
     }
 
     @Override
-    public void adicionar(Produto p) throws RemoteException {
+    public void cadastrar(Produto p) throws RemoteException {
         try {
-            dao.adicionar(p);
+            dao.cadastrar(p);
         } catch (SQLException e) {
-            throw new RemoteException("Erro ao adicionar produto", e);
+            throw new RemoteException("Erro ao cadastrar produto", e);
         }
     }
 

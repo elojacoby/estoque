@@ -103,7 +103,7 @@ public class ProdutoClientAPI {
             
             Produto produto = new Produto(id, nome, preco, quantidade, descricao);
             
-            produtoService.adicionar(produto);
+            produtoService.cadastrar(produto);
             System.out.println("Produto cadastrado com sucesso!");
         } catch (Exception e) {
             System.err.println("Erro ao cadastrar produto: " + e.getMessage());
@@ -242,7 +242,7 @@ public class ProdutoClientAPI {
                     scanner.nextLine();
                     produtoSelecionado.setQuantidade(quantidade);
                     
-                    produtoService.adicionar(produtoSelecionado);
+                    produtoService.cadastrar(produtoSelecionado);
                     System.out.println("Produto importado com sucesso!");
                 } else {
                     System.out.println("Índice inválido!");

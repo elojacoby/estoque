@@ -30,7 +30,7 @@ public class ProdutoDAO {
         }
     }
 
-    public void adicionar(Produto p) throws SQLException {
+    public void cadastrar(Produto p) throws SQLException {
         String sql = "INSERT INTO produtos (nome, preco, quantidade, descricao) VALUES (?, ?, ?, ?)";
         try (Connection conn = ConexaoDB.getConexao();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {

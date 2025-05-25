@@ -5,6 +5,7 @@ import java.rmi.registry.Registry;
 
 import servidor.Model.ProdutoService;
 import cliente.Controller.*;
+import cliente.View.ScreenInicial;
 
 public class ClienteApp {
     public static void main(String[] args) {
@@ -15,8 +16,8 @@ public class ClienteApp {
             System.out.println("Cliente RMI falhou" + e);
         }
 
-        ClienteController controller = new ClienteController();
-        controller.iniciar();
+        ScreenInicial screen = new ScreenInicial();
+        ClienteController controller = new ClienteController(screen);
+        screen.exibir();
     }
-
 }

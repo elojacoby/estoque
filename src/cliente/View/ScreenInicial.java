@@ -1,29 +1,19 @@
 package cliente.View;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-
+import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.TitlePaneLayout;
 
-import org.json.Cookie;
+public class ScreenInicial extends JFrame {
+    private JPanel painelConteudo;
+    private CadastroScreen painelCadastro;
+    private BuscarScreen painelBusca;
 
-import cliente.Controller.ClienteController;
-
-public class ScreenInicial extends JFrame{
-    private ClienteController controller;
-
-    public ScreenInicial(ClienteController controller) {
-        this.controller = controller;
+    public ScreenInicial() {
         configurarTela();
     }
 
-    public void configurarTela(){
-        setSize(640,400);
+    public void configurarTela() {
+        setSize(640, 400);
         setLocationRelativeTo(null);
         setTitle("Gerenciador de Estoque");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,75 +22,92 @@ public class ScreenInicial extends JFrame{
         JPanel menu = new JPanel();
         menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
         menu.setBackground(new Color(96, 88, 172));
-        menu.setPreferredSize(new Dimension(150, getHeight()));
+        menu.setPreferredSize(new Dimension(150, 400));
 
-        JButton btnCadastro = new JButton("Cadastrar");
+        JButton btnCadastrar = new JButton("Cadastrar");
         JButton btnBuscar = new JButton("Buscar");
         JButton btnEditar = new JButton("Editar");
         JButton btnExcluir = new JButton("Excluir");
-        JButton btnSair = new JButton("Sair");
+        JButton btnListar = new JButton("Listar");
+        JButton btnVoltar = new JButton("Voltar");
 
-        Dimension tamanhoBtn = new Dimension(100, 40);
+        Dimension tamanhoBtn = new Dimension(120, 40);
         Color corBtn = new Color(249, 248, 243);
         Color foreBtn = new Color(96, 88, 172);
+
+        JButton[] botoes = {btnCadastrar, btnBuscar, btnEditar, btnExcluir, btnListar, btnVoltar};
+
         menu.add(Box.createVerticalGlue());
 
-        menu.add(btnCadastro);
-        btnCadastro.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btnCadastro.setBackground(corBtn);
-        btnCadastro.setForeground(foreBtn);
-        menu.add(Box.createVerticalStrut(20));
-        btnCadastro.setMaximumSize(tamanhoBtn);
+        for (JButton btn : botoes) {
+            btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+            btn.setBackground(corBtn);
+            btn.setForeground(foreBtn);
+            btn.setMaximumSize(tamanhoBtn);
+            menu.add(btn);
+            menu.add(Box.createVerticalStrut(20));
+        }
+        menu.add(Box.createVerticalGlue());
 
-        menu.add(btnBuscar);
-        btnBuscar.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btnBuscar.setBackground(corBtn);
-        btnBuscar.setForeground(foreBtn);
-        menu.add(Box.createVerticalStrut(20));
-        btnBuscar.setMaximumSize(tamanhoBtn);
+        painelConteudo = new JPanel();
+        painelConteudo.setBackground(new Color(243, 240, 243));
+        painelConteudo.setLayout(new BorderLayout());
 
-        menu.add(btnEditar);
-        btnEditar.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btnEditar.setBackground(corBtn);
-        btnEditar.setForeground(foreBtn);
-        menu.add(Box.createVerticalStrut(20));
-        btnEditar.setMaximumSize(tamanhoBtn);
+        exibirTelaInicial();
 
-        menu.add(btnExcluir);
-        btnExcluir.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btnExcluir.setBackground(corBtn);
-        btnExcluir.setForeground(foreBtn);
-        menu.add(Box.createVerticalStrut(20));
-        btnExcluir.setMaximumSize(tamanhoBtn);
+        painelCadastro = new CadastroScreen();
+        painelBusca = new BuscarScreen();
 
-        menu.add(btnSair);
-        btnSair.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btnSair.setBackground(corBtn);
-        btnSair.setForeground(foreBtn);
-        btnSair.setMaximumSize(tamanhoBtn);
+        btnCadastrar.addActionListener(e -> trocarPainel(painelCadastro));
+        btnBuscar.addActionListener(e -> trocarPainel(painelBusca));
 
-        // btnCadastro.addActionListener(e -> controller.abrirTelaCadastro());
-        // btnBuscar.addActionListener(e -> controller.buscarProduto());
-        // btnListar.addActionListener(e -> controller.listarProduto());
-        // btnEditar.addActionListener(e -> controller.editarProduto());
-        // btnSair.addActionListener(e -> controller.sair());
 
-        menu.add(Box.createVerticalGlue()); 
-        
-        JPanel conteudo = new JPanel();
-        conteudo.setBackground(new Color(243, 240, 243));
+        btnVoltar.addActionListener(e -> exibirTelaInicial());
+
+        add(menu, BorderLayout.WEST);
+        add(painelConteudo, BorderLayout.CENTER);
+    }
+
+    public void exibirTelaInicial() {
+        painelConteudo.removeAll();
+        painelConteudo.setLayout(new BorderLayout());
+
+        JPanel painelTitulo = new JPanel(new BorderLayout());
+        painelTitulo.setBackground(new Color(243, 240, 243));
+        painelTitulo.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); // Margem superior de 20px
 
         JLabel titulo = new JLabel("Bem-Vindo ao Sistema de Estoque!");
-        conteudo.add(Box.createVerticalStrut(30));
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 18));
         titulo.setForeground(new Color(96, 88, 172));
-        conteudo.add(titulo, BorderLayout.NORTH);
 
-        add(menu, BorderLayout.WEST);
-        add(conteudo, BorderLayout.CENTER);
+        painelTitulo.add(titulo, BorderLayout.CENTER);
+        painelConteudo.add(painelTitulo, BorderLayout.NORTH);
+
+        try {
+            ImageIcon imgFundo = new ImageIcon(getClass().getResource("/recursos/imagens/estoqueImg.jpg"));
+            Image img = imgFundo.getImage().getScaledInstance(400, 300, Image.SCALE_SMOOTH);
+            imgFundo = new ImageIcon(img);
+
+            JLabel labelImagem = new JLabel(imgFundo);
+            labelImagem.setHorizontalAlignment(SwingConstants.CENTER);
+            painelConteudo.add(labelImagem, BorderLayout.CENTER);
+        } catch (Exception e) {
+            painelConteudo.add(new JLabel("Imagem não encontrada.", SwingConstants.CENTER), BorderLayout.CENTER);
+        }
+
+        painelConteudo.revalidate();
+        painelConteudo.repaint();
     }
-    public void exibir(){
-        setVisible(true); 
+
+    private void trocarPainel(JPanel novoPainel) {
+        painelConteudo.removeAll();
+        painelConteudo.add(novoPainel, BorderLayout.CENTER);
+        painelConteudo.revalidate();
+        painelConteudo.repaint();
+    }
+
+    public void exibir() {
+        setVisible(true);
     }
 }

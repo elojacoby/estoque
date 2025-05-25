@@ -60,6 +60,10 @@ public class Produto implements Serializable {
         this.descricao = descricao;
     }
 
+    public void cadastrar(){
+        
+    }
+
     @Override
     public String toString() {
         return id + ": " + nome + " - R$" + preco + " - Quantidade: " + quantidade + "Descrição: " + descricao;
