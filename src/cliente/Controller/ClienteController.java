@@ -1,18 +1,28 @@
 package cliente.Controller;
 
-import cliente.Model.ProdutoDTO;
+import servidor.Controller.TableModel;
 import cliente.View.*;
-import servidor.Model.Produto;
 
-public class ClienteController{
+public class ClienteController {
     private ScreenInicial screen;
-    private BuscarScreen buscarScreen;
-    private Produto produtoAtual;
-    
-    public ClienteController(ScreenInicial screen){
+    private final BuscarScreen buscarScreen;
+    private final CadastroScreen cadastroScreen;
+    private final ListarScreen listarScreen;
+    private final TableModel tableModel;
+
+    public ClienteController(CadastroScreen cadastroScreen, ListarScreen listarScreen, BuscarScreen buscarScreen,
+            TableModel tableModel) {
+        this.cadastroScreen = cadastroScreen;
+        this.listarScreen = listarScreen;
+        this.buscarScreen = buscarScreen;
+        this.tableModel = tableModel;
+    }
+
+    public void setScreenInicial(ScreenInicial screen) {
         this.screen = screen;
     }
-    public void setBuscarScreen(BuscarScreen buscarScreen) {
-        this.buscarScreen = buscarScreen;
+
+    public TableModel getTableModel() {
+        return tableModel;
     }
 }

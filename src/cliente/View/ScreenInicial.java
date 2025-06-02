@@ -5,14 +5,18 @@ import javax.swing.*;
 
 public class ScreenInicial extends JFrame {
     private JPanel painelConteudo;
-    private CadastroScreen painelCadastro;
-    private BuscarScreen painelBusca;
+    private final CadastroScreen painelCadastro;
+    private final BuscarScreen painelBusca;
+    private final ListarScreen painelListar;
 
-    public ScreenInicial() {
+    public ScreenInicial(CadastroScreen cadastro, ListarScreen listar, BuscarScreen buscar) {
+        this.painelCadastro = cadastro;
+        this.painelBusca = buscar;
+        this.painelListar = listar;
         configurarTela();
     }
 
-    public void configurarTela() {
+    private void configurarTela() {
         setSize(640, 400);
         setLocationRelativeTo(null);
         setTitle("Gerenciador de Estoque");
@@ -26,8 +30,6 @@ public class ScreenInicial extends JFrame {
 
         JButton btnCadastrar = new JButton("Cadastrar");
         JButton btnBuscar = new JButton("Buscar");
-        JButton btnEditar = new JButton("Editar");
-        JButton btnExcluir = new JButton("Excluir");
         JButton btnListar = new JButton("Listar");
         JButton btnVoltar = new JButton("Voltar");
 
@@ -35,7 +37,7 @@ public class ScreenInicial extends JFrame {
         Color corBtn = new Color(249, 248, 243);
         Color foreBtn = new Color(96, 88, 172);
 
-        JButton[] botoes = {btnCadastrar, btnBuscar, btnEditar, btnExcluir, btnListar, btnVoltar};
+        JButton[] botoes = { btnCadastrar, btnBuscar, btnListar, btnVoltar };
 
         menu.add(Box.createVerticalGlue());
 
@@ -47,6 +49,7 @@ public class ScreenInicial extends JFrame {
             menu.add(btn);
             menu.add(Box.createVerticalStrut(20));
         }
+
         menu.add(Box.createVerticalGlue());
 
         painelConteudo = new JPanel();
@@ -55,13 +58,9 @@ public class ScreenInicial extends JFrame {
 
         exibirTelaInicial();
 
-        painelCadastro = new CadastroScreen();
-        painelBusca = new BuscarScreen();
-
         btnCadastrar.addActionListener(e -> trocarPainel(painelCadastro));
         btnBuscar.addActionListener(e -> trocarPainel(painelBusca));
-
-
+        btnListar.addActionListener(e -> trocarPainel(painelListar));
         btnVoltar.addActionListener(e -> exibirTelaInicial());
 
         add(menu, BorderLayout.WEST);
@@ -74,7 +73,7 @@ public class ScreenInicial extends JFrame {
 
         JPanel painelTitulo = new JPanel(new BorderLayout());
         painelTitulo.setBackground(new Color(243, 240, 243));
-        painelTitulo.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); // Margem superior de 20px
+        painelTitulo.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
         JLabel titulo = new JLabel("Bem-Vindo ao Sistema de Estoque!");
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -100,7 +99,7 @@ public class ScreenInicial extends JFrame {
         painelConteudo.repaint();
     }
 
-    private void trocarPainel(JPanel novoPainel) {
+    public void trocarPainel(JPanel novoPainel) {
         painelConteudo.removeAll();
         painelConteudo.add(novoPainel, BorderLayout.CENTER);
         painelConteudo.revalidate();

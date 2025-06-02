@@ -1,11 +1,13 @@
 package cliente.View;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.util.concurrent.SubmissionPublisher;
-
+import servidor.Controller.ProdutoClientAPI;
+import servidor.Model.Produto;
+import servidor.Controller.TableModel;
+import cliente.Controller.ProdutoSocketClient;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.*;
 
 public class BuscarScreen extends JPanel {
@@ -13,17 +15,16 @@ public class BuscarScreen extends JPanel {
     private JButton btnBuscar;
     private JButton btnSalvar;
     private JButton btnLimpar;
+    private JTable tabela;
 
     public BuscarScreen() {
         setBackground(new Color(243, 240, 243));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(40, 15, 15, 15));
-
         criarPainelBuscar();
     }
 
     public void criarPainelBuscar() {
-        
         JLabel titulo = new JLabel("Buscar Produtos");
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 18));
@@ -40,9 +41,8 @@ public class BuscarScreen extends JPanel {
         add(subTitulo);
         add(Box.createVerticalStrut(30));
 
-
         JLabel lblNome = new JLabel("Nome do produto:");
-        JTextField cmpNome = new JTextField(20);
+        cmpNome = new JTextField(20);
 
         btnBuscar = new JButton("Buscar");
         btnSalvar = new JButton("Salvar no Banco");
@@ -50,7 +50,6 @@ public class BuscarScreen extends JPanel {
         btnLimpar = new JButton("Limpar");
 
         Dimension tamanhoCampo = new Dimension(200, 40);
-
         cmpNome.setMaximumSize(tamanhoCampo);
         cmpNome.setPreferredSize(tamanhoCampo);
 
@@ -64,8 +63,7 @@ public class BuscarScreen extends JPanel {
         Color corBtn = new Color(249, 248, 243);
         Color foreColor = new Color(96, 88, 172);
 
-        JButton[] botoes = {btnBuscar, btnLimpar, btnSalvar};
-
+        JButton[] botoes = { btnBuscar, btnLimpar, btnSalvar };
         for (JButton btn : botoes) {
             btn.setBackground(corBtn);
             btn.setForeground(foreColor);
@@ -78,33 +76,71 @@ public class BuscarScreen extends JPanel {
         painelBotoes.add(btnSalvar);
         painelBotoes.add(Box.createHorizontalStrut(15));
         painelBotoes.add(btnLimpar);
-
         painelBotoes.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         add(Box.createVerticalStrut(15));
         add(painelBotoes);
 
+        tabela = new JTable(new TableModel());
+        JScrollPane scrollPane = new JScrollPane(tabela);
+        scrollPane.setPreferredSize(new Dimension(500, 200));
+        scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(Box.createVerticalStrut(20));
+        add(scrollPane);
+
+        // Ações dos botões
         btnLimpar.addActionListener(e -> limparCampos(cmpNome));
 
-        // Aqui no botão buscar, chama o Controller com a função de buscar na API
-        // buscarProdutosDaAPI()
-        btnBuscar.addActionListener(e -> {
-            String nome = cmpNome.getText();
-            String descricao = cmpNome.getText();
-            String preco = cmpNome.getText();
-            String quantidade = cmpNome.getText();
+        btnBuscar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String nome = cmpNome.getText();
+                try {
+                    ProdutoClientAPI clientAPI = new ProdutoClientAPI();
+                    List<Produto> produtos = clientAPI.buscarPorNome(nome);
+                    TableModel model = new TableModel(produtos);
+                    tabela.setModel(model);
+                    btnSalvar.setEnabled(!produtos.isEmpty());
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Erro ao buscar produto: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+            }
+        });
 
-            JOptionPane.showMessageDialog(this,
-                    "Produto encontrado:\nNome: " + nome +
-                    "\nDescrição: " + descricao +
-                    "\nPreço: " + preco +
-                    "\nQuantidade: " + quantidade,
-                    "Resultado da Busca", JOptionPane.INFORMATION_MESSAGE);
-            
-            habilitarBotaoSalvar(true);
-            limparCampos(cmpNome);
+        btnSalvar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = tabela.getSelectedRow();
+
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(null, "Selecione um produto na tabela para salvar.");
+                    return;
+                }
+
+                TableModel model = (TableModel) tabela.getModel();
+                Produto produtoSelecionado = model.getProdutoAt(selectedRow);
+
+                try {
+                    String idStr = JOptionPane.showInputDialog("Digite o código (ID) para salvar:");
+                    int id = Integer.parseInt(idStr);
+
+                    String qtdStr = JOptionPane.showInputDialog("Digite a quantidade:");
+                    int qtd = Integer.parseInt(qtdStr);
+
+                    produtoSelecionado.setId(id);
+                    produtoSelecionado.setQuantidade(qtd);
+
+                    ProdutoSocketClient client = new ProdutoSocketClient();
+                    client.enviarProdutoParaServidor(produtoSelecionado);
+
+                    JOptionPane.showMessageDialog(null, "Produto salvo com sucesso!");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Erro ao salvar: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+            }
         });
     }
+
     public void habilitarBotaoSalvar(boolean habilitar) {
         btnSalvar.setEnabled(habilitar);
     }
@@ -124,10 +160,10 @@ public class BuscarScreen extends JPanel {
         linha.add(campo);
 
         linha.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         add(linha);
         add(Box.createVerticalStrut(10));
     }
+
     private void limparCampos(JTextField... campos) {
         for (JTextField campo : campos) {
             campo.setText("");
