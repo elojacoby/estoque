@@ -35,7 +35,6 @@ public class ListarScreen extends JPanel {
         tabela.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
         tabela.setGridColor(Color.LIGHT_GRAY);
 
-        // 🎯 Evento de duplo clique na tabela
         tabela.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -50,10 +49,10 @@ public class ListarScreen extends JPanel {
 
                         Produto produtoSelecionado = new Produto(id, nome, preco, quantidade, descricao);
 
-                        // 🟪 Cria a tela de edição
+                        // Cria a tela de edição
                         EditarScreen editarScreen = new EditarScreen(produtoSelecionado, screenInicial);
 
-                        // 🟧 Troca o painel usando o método da ScreenInicial
+                        // Troca o painel usando o método da ScreenInicial
                         screenInicial.trocarPainel(editarScreen);
                     }
                 }

@@ -19,13 +19,13 @@ public class TableModel extends AbstractTableModel {
     private final int col_Descricao = 1;
     private final int col_Preco = 2;
     private final int col_Quantidade = 3;
-    private final String[] columnNomes = {"Nome", "Descrição", "Preço", "Quantidade"};
+    private final String[] columnNomes = { "Nome", "Descrição", "Preço", "Quantidade" };
 
     public TableModel() {
         this.lista = new ArrayList<>();
     }
 
-    // 🔥 Construtor com lista
+    // Construtor com lista
     public TableModel(List<Produto> lista) {
         this.lista = new ArrayList<>(lista);
     }
@@ -40,8 +40,13 @@ public class TableModel extends AbstractTableModel {
         return columnNomes.length;
     }
 
+    @Override
+    public String getColumnName(int column) {
+        return columnNomes[column];
+    }
+
     public void setLista(List<Produto> lista) {
-        this.lista = new ArrayList<>(lista); 
+        this.lista = new ArrayList<>(lista);
         fireTableDataChanged();
     }
 
@@ -62,9 +67,10 @@ public class TableModel extends AbstractTableModel {
                 return "";
         }
     }
+
     public void addProduto(Produto produto) {
         this.lista.add(produto);
-        fireTableRowsInserted(this.lista.size()-1, this.lista.size()-1);
+        fireTableRowsInserted(this.lista.size() - 1, this.lista.size() - 1);
     }
 
     public void updateProduto(Produto produtoAtualizado) {
@@ -81,4 +87,9 @@ public class TableModel extends AbstractTableModel {
         lista.remove(row);
         fireTableRowsDeleted(row, row);
     }
+
+    public Produto getProdutoAt(int rowIndex) {
+        return lista.get(rowIndex);
+    }
+
 }

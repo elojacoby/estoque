@@ -18,7 +18,7 @@ public class CadastroScreen extends JPanel {
     }
 
     public void criarPainelCadastro() {
-        
+
         JLabel titulo = new JLabel("Cadastro de Produtos");
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 18));
@@ -69,7 +69,7 @@ public class CadastroScreen extends JPanel {
         Color corBtn = new Color(249, 248, 243);
         Color foreColor = new Color(96, 88, 172);
 
-        JButton[] botoes = {btnCadastrar, btnLimpar};
+        JButton[] botoes = { btnCadastrar, btnLimpar };
 
         for (JButton btn : botoes) {
             btn.setBackground(corBtn);
@@ -98,7 +98,7 @@ public class CadastroScreen extends JPanel {
             JOptionPane.showMessageDialog(this,
                     "Produto cadastrado:\nNome: " + nome + "\nDescrição: " + descricao
                             + "\nPreço: " + preco + "\nQuantidade: " + quantidade);
-            
+
             limparCampos(txtNome, txtDescricao, txtPreco, txtQuantidade);
         });
     }
@@ -122,6 +122,7 @@ public class CadastroScreen extends JPanel {
         add(linha);
         add(Box.createVerticalStrut(10));
     }
+
     private void limparCampos(JTextField... campos) {
         for (JTextField campo : campos) {
             campo.setText("");

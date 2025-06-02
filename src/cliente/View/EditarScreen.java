@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-
 public class EditarScreen extends JPanel {
     private JTextField campoNome;
     private JTextField campoDescricao;
@@ -97,10 +96,10 @@ public class EditarScreen extends JPanel {
 
         add(painelBotoes, BorderLayout.SOUTH);
 
-        // 🔥 Ação do botão Salvar
+        // Ação do botão Salvar
         btnSalvar.addActionListener(e -> salvarProduto());
 
-        // 🔙 Ação do botão Cancelar
+        // Ação do botão Cancelar
         btnCancelar.addActionListener(e -> voltarParaListagem());
     }
 
@@ -129,9 +128,11 @@ public class EditarScreen extends JPanel {
             voltarParaListagem();
 
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "O campo preço deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "O campo preço deve ser um número válido.", "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Erro ao atualizar produto: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar produto: " + ex.getMessage(), "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -142,7 +143,8 @@ public class EditarScreen extends JPanel {
             ListarScreen listarScreen = new ListarScreen(modelo, screenInicial);
             screenInicial.trocarPainel(listarScreen);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao carregar listagem: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erro ao carregar listagem: " + e.getMessage(), "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 }

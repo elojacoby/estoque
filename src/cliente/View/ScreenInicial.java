@@ -37,7 +37,7 @@ public class ScreenInicial extends JFrame {
         Color corBtn = new Color(249, 248, 243);
         Color foreBtn = new Color(96, 88, 172);
 
-        JButton[] botoes = {btnCadastrar, btnBuscar, btnListar, btnVoltar};
+        JButton[] botoes = { btnCadastrar, btnBuscar, btnListar, btnVoltar };
 
         menu.add(Box.createVerticalGlue());
 
