@@ -7,6 +7,9 @@ import java.awt.Font;
 
 import javax.swing.*;
 
+import cliente.Controller.ProdutoSocketClient;
+import servidor.Model.Produto;
+
 public class CadastroScreen extends JPanel {
 
     public CadastroScreen() {
@@ -90,16 +93,26 @@ public class CadastroScreen extends JPanel {
         btnLimpar.addActionListener(e -> limparCampos(txtNome, txtDescricao, txtPreco, txtQuantidade));
 
         btnCadastrar.addActionListener(e -> {
-            String nome = txtNome.getText();
-            String descricao = txtDescricao.getText();
-            String preco = txtPreco.getText();
-            String quantidade = txtQuantidade.getText();
+            try {
+                String nome = txtNome.getText();
+                String descricao = txtDescricao.getText();
+                double preco = Double.parseDouble(txtPreco.getText());
+                int quantidade = Integer.parseInt(txtQuantidade.getText());
 
-            JOptionPane.showMessageDialog(this,
-                    "Produto cadastrado:\nNome: " + nome + "\nDescrição: " + descricao
-                            + "\nPreço: " + preco + "\nQuantidade: " + quantidade);
+                Produto produto = new Produto();
+                produto.setNome(nome);
+                produto.setDescricao(descricao);
+                produto.setPreco(preco);
+                produto.setQuantidade(quantidade);
+                ProdutoSocketClient client = new ProdutoSocketClient();
+                client.enviarProdutoParaServidor(produto);
 
-            limparCampos(txtNome, txtDescricao, txtPreco, txtQuantidade);
+                JOptionPane.showMessageDialog(this, "Produto cadastrado com sucesso!");
+                limparCampos(txtNome, txtDescricao, txtPreco, txtQuantidade);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erro ao cadastrar produto: " + ex.getMessage());
+                ex.printStackTrace();
+            }
         });
     }
 
