@@ -120,13 +120,9 @@ public class BuscarScreen extends JPanel {
                 Produto produtoSelecionado = model.getProdutoAt(selectedRow);
 
                 try {
-                    String idStr = JOptionPane.showInputDialog("Digite o código (ID) para salvar:");
-                    int id = Integer.parseInt(idStr);
-
                     String qtdStr = JOptionPane.showInputDialog("Digite a quantidade:");
                     int qtd = Integer.parseInt(qtdStr);
 
-                    produtoSelecionado.setId(id);
                     produtoSelecionado.setQuantidade(qtd);
 
                     ProdutoSocketClient client = new ProdutoSocketClient();
