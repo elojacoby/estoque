@@ -8,6 +8,7 @@ import java.awt.Font;
 import javax.swing.*;
 
 import cliente.Controller.ProdutoSocketClient;
+import servidor.Model.EnviarMensagem;
 import servidor.Model.Produto;
 
 public class CadastroScreen extends JPanel {
@@ -104,8 +105,13 @@ public class CadastroScreen extends JPanel {
                 produto.setDescricao(descricao);
                 produto.setPreco(preco);
                 produto.setQuantidade(quantidade);
+
+                EnviarMensagem mensagem = new EnviarMensagem("cadastrar");
+                mensagem.setProduto(produto);
+
                 ProdutoSocketClient client = new ProdutoSocketClient();
-                client.enviarProdutoParaServidor(produto);
+                Object resposta = client.enviarMensagem(mensagem);
+                System.out.println(resposta);
 
                 JOptionPane.showMessageDialog(this, "Produto cadastrado com sucesso!");
                 limparCampos(txtNome, txtDescricao, txtPreco, txtQuantidade);

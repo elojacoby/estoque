@@ -1,8 +1,9 @@
 package cliente.View;
 
-import servidor.Controller.ProdutoClientAPI;
+import servidor.Model.EnviarMensagem;
 import servidor.Model.Produto;
 import servidor.Controller.TableModel;
+import cliente.Controller.ProdutoClientAPI;
 import cliente.Controller.ProdutoSocketClient;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -122,13 +123,15 @@ public class BuscarScreen extends JPanel {
                 try {
                     String qtdStr = JOptionPane.showInputDialog("Digite a quantidade:");
                     int qtd = Integer.parseInt(qtdStr);
-
                     produtoSelecionado.setQuantidade(qtd);
 
-                    ProdutoSocketClient client = new ProdutoSocketClient();
-                    client.enviarProdutoParaServidor(produtoSelecionado);
+                    EnviarMensagem mensagem = new EnviarMensagem("cadastrar");
+                    mensagem.setProduto(produtoSelecionado);
 
-                    JOptionPane.showMessageDialog(null, "Produto salvo com sucesso!");
+                    ProdutoSocketClient client = new ProdutoSocketClient();
+                    Object resposta = client.enviarMensagem(mensagem);
+
+                    JOptionPane.showMessageDialog(null, resposta.toString());
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao salvar: " + ex.getMessage());
                     ex.printStackTrace();

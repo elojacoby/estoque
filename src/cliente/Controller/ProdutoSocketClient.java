@@ -1,18 +1,29 @@
 package cliente.Controller;
 
+import servidor.Model.EnviarMensagem;
 import servidor.Model.Produto;
+
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ProdutoSocketClient {
-    public void enviarProdutoParaServidor(Produto produto) throws Exception {
-        Socket socket = new Socket("localhost", 12347);
-        ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 
-        output.writeObject(produto);
-        output.flush();
+    public Object enviarMensagem(EnviarMensagem mensagem) throws Exception {
+        Socket socket = new Socket("ip", 12345);
+        ObjectOutputStream saida = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream entrada = new ObjectInputStream(socket.getInputStream());
 
-        output.close();
+        saida.writeObject(mensagem);
+        // força o envio
+        saida.flush();
+        // lê a resposta enviada pelo servidor
+        Object resposta = entrada.readObject();
+
+        entrada.close();
+        saida.close();
         socket.close();
+
+        return resposta;
     }
 }

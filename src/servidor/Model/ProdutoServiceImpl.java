@@ -7,7 +7,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ProdutoServiceImpl extends UnicastRemoteObject implements ProdutoService {
+import cliente.Controller.ProdutoService;
+
+public class ProdutoServiceImpl implements ProdutoService {
     private ProdutoDAO dao;
 
     public ProdutoServiceImpl() throws RemoteException {
@@ -46,7 +48,7 @@ public class ProdutoServiceImpl extends UnicastRemoteObject implements ProdutoSe
     @Override
     public List<Produto> buscarProdutosDaAPI() throws RemoteException {
         try {
-            return servidor.Controller.ProdutoClientAPI.buscarProdutoJson();
+            return cliente.Controller.ProdutoClientAPI.buscarProdutoJson();
         } catch (Exception e) {
             throw new RemoteException("Erro ao buscar produtos da API", e);
         }
