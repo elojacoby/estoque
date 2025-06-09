@@ -5,8 +5,6 @@ import servidor.Model.Produto;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import comum.ProdutoService;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;

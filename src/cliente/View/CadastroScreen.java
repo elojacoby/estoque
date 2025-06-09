@@ -95,28 +95,38 @@ public class CadastroScreen extends JPanel {
 
         btnCadastrar.addActionListener(e -> {
             try {
+                if (txtNome.getText().isEmpty() || txtPreco.getText().isEmpty() || txtQuantidade.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Preencha todos os campos.");
+                    return;
+                }
+
                 String nome = txtNome.getText();
-                String descricao = txtDescricao.getText();
                 double preco = Double.parseDouble(txtPreco.getText());
                 int quantidade = Integer.parseInt(txtQuantidade.getText());
+                String descricao = txtDescricao.getText();
 
                 Produto produto = new Produto();
                 produto.setNome(nome);
-                produto.setDescricao(descricao);
                 produto.setPreco(preco);
                 produto.setQuantidade(quantidade);
+                produto.setDescricao(descricao);
 
                 EnviarMensagem mensagem = new EnviarMensagem("cadastrar");
                 mensagem.setProduto(produto);
 
                 ProdutoSocketClient client = new ProdutoSocketClient();
                 Object resposta = client.enviarMensagem(mensagem);
-                System.out.println(resposta);
 
-                JOptionPane.showMessageDialog(this, "Produto cadastrado com sucesso!");
-                limparCampos(txtNome, txtDescricao, txtPreco, txtQuantidade);
+                JOptionPane.showMessageDialog(this, resposta.toString(), "Cadastro", JOptionPane.INFORMATION_MESSAGE);
+
+                txtNome.setText("");
+                txtPreco.setText("");
+                txtQuantidade.setText("");
+                txtDescricao.setText("");
+
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Erro ao cadastrar produto: " + ex.getMessage());
+                JOptionPane.showMessageDialog(this, "Erro ao cadastrar produto: " + ex.getMessage(), "Erro",
+                        JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
         });

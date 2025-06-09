@@ -10,7 +10,7 @@ import java.net.Socket;
 public class ProdutoSocketClient {
 
     public Object enviarMensagem(EnviarMensagem mensagem) throws Exception {
-        Socket socket = new Socket("ip", 12345);
+        Socket socket = new Socket("ip", 12347);
         ObjectOutputStream saida = new ObjectOutputStream(socket.getOutputStream());
         ObjectInputStream entrada = new ObjectInputStream(socket.getInputStream());
 
