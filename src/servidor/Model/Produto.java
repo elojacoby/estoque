@@ -60,8 +60,8 @@ public class Produto implements Serializable {
         this.descricao = descricao;
     }
 
-    public void cadastrar(){
-        
+    public void cadastrar() {
+
     }
 
     @Override

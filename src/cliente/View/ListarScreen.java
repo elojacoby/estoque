@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import cliente.View.ScreenInicial;
 import servidor.Controller.TableModel;
+import servidor.Model.EnviarMensagem;
 import servidor.Model.Produto;
 
 public class ListarScreen extends JPanel {
@@ -18,6 +19,16 @@ public class ListarScreen extends JPanel {
         this.screenInicial = screenInicial;
         initUI();
     }
+
+    // ISSO AQUI É PRA CONEXAO COM O SERVIDOR
+    // EnviarMensagem msg = new EnviarMensagem("listar");
+
+    // Produto p = new Produto();
+    // EnviarMensagem msg = new EnviarMensagem("atualizar");
+    // msg.setProduto(p);
+
+    // EnviarMensagem msg = new EnviarMensagem("excluir");
+    // msg.setId();
 
     private void initUI() {
         setLayout(new BorderLayout());
